@@ -19,26 +19,29 @@
 	}
 	F.navigators = {};
 	F.home = null;
+	F.fading = false;
+	F.currentPage = null;
 	$(function(){
-		F.defaults.header = $("div.fade-header").text();
+		F.defaults.header = $(".fade-header").text();
 		$("div.fade-content div.fade-page").each(function(){
 			var elem = $(this);
 			if(elem.hasClass('fade-home') && F.home == null){
 				F.home = elem;
+				F.currentPage = elem.attr('data-link');
 				elem.fadeIn();
-				dev('home set to ' + elem.attr('data-link'));
+				F.dev('home set to ' + elem.attr('data-link'));
 			} else if(elem.hasClass('fade-home') && F.home != null){
 				console.error("Home fade-page is already set, you can only have one home!");
 			}
 			F.navigators[elem.attr('data-link')] = elem;
 		});
-		dev('Built up navigation array');
+		F.dev('Built up navigation array');
 		$("div.fade-nav li").each(function(){
 			var elem = $(this);
 			var target = elem.attr('data-target');
 			elem.hover(
 				function(){
-					dev('animating on hover: ' + target);
+					F.dev('animating on hover: ' + target);
 					elem.stop().animate({
 						color: F.defaults['nav-color-text'],
 						backgroundColor: F.defaults['nav-color'],
@@ -49,7 +52,7 @@
 					elem.attr('anim', true);
 				},
 				function(){
-					dev('animating on hover stop: ' + target);
+					F.dev('animating on hover stop: ' + target);
 					elem.stop().animate({
 						color: F.defaults['nav-color-text-orig'],
 						backgroundColor: F.defaults['nav-color-orig'],
@@ -61,23 +64,34 @@
 			);
 				
 			elem.click(function(){
-				dev('fading to ' + target);
-				$("div.fade-page").fadeOut({
-					duration: F.defaults['fade-time'],
-					easing: F.defaults.ease,
-				});
-				F.target = target;
-				setTimeout(function(){
-					F.navigators[F.target].fadeIn(F.defaults['fade-time'],
-						function(){
-							F.target = null;
+				if(!F.fading && F.currentPage != target){
+					F.fading = true;
+					F.dev('fading to ' + target);
+					$("div.fade-page").fadeOut({
+						duration: F.defaults['fade-time'],
+						easing: F.defaults.ease,
 					});
-				}, F.defaults['fade-time'] + 10);
+					$(".fade-header").fadeOut(F.defaults['fade-time'], function(){
+						var text = elem.attr('data-head');
+						$(".fade-header").text((text != undefined && text != "")? text : F.defaults.header);
+					});
+					F.target = target;
+					setTimeout(function(){
+						F.navigators[F.target].fadeIn(F.defaults['fade-time'],
+							function(){
+								F.target = null;
+								F.fading = false;
+						});
+						$(".fade-header").fadeIn(F.defaults['fade-time']);
+						F.currentPage = target;
+					}, F.defaults['fade-time'] + 10);
+				}
+				
 			});
 		});
 	});
 	
-	function dev(msg){
+	F.dev = function(msg){
 		if($.fade.defaults.develop){
 			console.log(msg);
 		}
