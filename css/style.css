@@ -1,0 +1,79 @@
+html, body {height:80%;}
+
+.leftpane {
+	width: 20%;
+	margin: 12px;
+	height: 100%;
+	float: left;
+}
+
+.rightpane {
+	width: 75%;
+	margin: 12px;
+	height: 100%;
+	float: left;
+}
+
+div.container {
+	margin-top: 25px;
+	height: 50%;
+}
+
+.fade-page {
+	display: none;
+}
+
+.fade-nav div {
+	display: block;
+	margin-top: 15px;
+}
+
+.fade-nav {
+	padding-top: 25px;
+	height: 100%;
+	
+	/* Internet Explorer 10 */
+	display:-ms-flexbox;
+	-ms-flex-pack:center;
+	-ms-flex-align:center;
+
+	/* Firefox */
+	display:-moz-box;
+	-moz-box-pack:center;
+	-moz-box-align:center;
+
+	/* Safari, Opera, and Chrome */
+	display:-webkit-box;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+
+	/* W3C */
+	display:box;
+	box-pack:center;
+	box-align:center;
+}
+
+.fade-nav  li{
+	margin: 0;
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.fade-header {
+	text-align: center;
+}
+
+.fade-header div{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.div-hor {
+	width: 100%;
+}
+
+.div-ver {
+	height: 100%;
+}
+	
